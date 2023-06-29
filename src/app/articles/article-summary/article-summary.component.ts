@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Article } from 'src/app/models/article';
 import { ArticleService } from 'src/app/admin/article.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-article-summary',
@@ -9,14 +11,14 @@ import { catchError, throwError } from 'rxjs';
   styleUrls: ['./article-summary.component.css']
 })
 export class ArticleSummaryComponent implements OnInit {
-  isWaitingForServerResponse = false;
-  error = null;
-  @Output() deleteSuccess = new EventEmitter<boolean>();
   @Input()
   article!: Article;
+  isWaitingForServerResponse = false;
+  error = null;
   isInEditMode = false;
+  @Output() deleteSuccess = new EventEmitter<boolean>();
 
-  constructor(private articleService: ArticleService) { }
+  constructor(private articleService: ArticleService, public authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -41,21 +43,26 @@ export class ArticleSummaryComponent implements OnInit {
         }
       );
   }
-  
-
-  handleError(err: null): any {
-    this.error = err;
-    return this.error; // Retourne le contenu de l'erreur
-  }
-
-  handleSuccess(data: any) {
-    console.log('success!!', data);
-    this.deleteSuccess.emit(true);
-  }
 
   toggleReadMode() {
     this.isInEditMode = !this.isInEditMode;
   }
-  
+
+  reloadArticle(article: Article) {
+    console.log(article);
+    this.article = article;
+  }
+
+  handleError(err: null) {
+    // console.log(err);
+    this.error = err;
+    return throwError(this.error);
+  }
+
+  handleSuccess(data: Article) {
+    console.log('success !!', data);
+    this.deleteSuccess.emit(true);
+
+  }
 
 }

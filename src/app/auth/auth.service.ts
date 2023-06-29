@@ -31,7 +31,7 @@ export class AuthService {
       });
   }
 
-  decodePayloadToken(token) {
+  decodePayloadToken(token: any) {
     const payload = JSON.parse(atob(token.access_token.split('.')[1]));
     console.log('payload', payload);
     return payload;
