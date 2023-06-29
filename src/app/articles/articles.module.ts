@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ArticlesRoutingModule } from './articles-routing.module';
-import { ArticlesComponent } from './articles/articles.component';
+import { ArticlesComponent } from './articles.component';
 import { ArticleSummaryComponent } from './article-summary/article-summary.component';
 import { AdminModule } from '../admin/admin.module';
 
